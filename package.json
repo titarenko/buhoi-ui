@@ -1,0 +1,12 @@
+{
+  "name": "buhoi-ui",
+  "version": "1.0.0",
+  "description": "UI components for buhoi framework.",
+  "main": "index.js",
+  "repository": {
+    "url": "git@github.com:titarenko/buhoi-ui.git",
+    "type": "git"
+  },
+  "author": "Constantin Titarenko <constantin.titarenko@gmail.com>",
+  "license": "MIT"
+}
