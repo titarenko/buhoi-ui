@@ -46,7 +46,7 @@ function setPageSize (state, { size }) {
 }
 
 function setLoading (state) {
-	return { ...state, loading: true }
+	return { ...state, items: null, loadingError: null, loading: true }
 }
 
 function setItems (state, { items }) {
@@ -69,7 +69,7 @@ function canCauseInvalidation (handler) {
 	return function (state, action) {
 		const result = handler(state, action)
 		return action.invalidateList
-			? set(result, 'items', null)
+			? set({ ...result }, 'items', null)
 			: result
 	}
 }
