@@ -1,6 +1,6 @@
 module.exports = {
 	initializeQuery,
-	clearQuery,
+	removeQuery,
 
 	setFilter,
 	setGrouping,
@@ -50,7 +50,7 @@ function setPageSize (size, invalidateList = true) {
 }
 
 function loadItems (resource, query) {
-	dispatch => {
+	return dispatch => {
 		dispatch({ type: 'LIST_LOADING_STARTED' })
 		resource(encodeURIComponent(JSON.stringify(query)))
 			.then(r => dispatch(r.statusCode < 400
