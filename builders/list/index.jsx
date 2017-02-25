@@ -1,4 +1,4 @@
-const { Same } = require('../components/same')
+const Same = require('../../components/same')
 const { initializeQuery, loadItems } = require('./actions')
 
 module.exports = function ({
@@ -6,7 +6,7 @@ module.exports = function ({
 
 	defaultQuery,
 
-	Query,
+	Query = NoQuery,
 	Head,
 	Body,
 
@@ -49,7 +49,7 @@ function isNotInitialized ({ query }) {
 }
 
 function isNotLoaded ({ items, loading, loadingError }) {
-	return !(items || loading || loadingError)
+	return !(items || loading || loadingError != null)
 }
 
 function isLoading ({ loading }) {
@@ -57,7 +57,10 @@ function isLoading ({ loading }) {
 }
 
 function isLoadingFailed ({ loadingError }) {
-	return loadingError
+	return loadingError != null
+}
+
+function NoQuery () {
 }
 
 function DefaultLoading () {
