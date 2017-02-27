@@ -1,0 +1,29 @@
+.multiselect {
+	$spacing: 4px;
+	margin-bottom: $spacing;
+	.input {
+		width: 100%;
+		box-sizing: border-box;
+		display: flex;
+		span {
+			flex-shrink: 0;
+			border-bottom: 1px black dotted;
+			margin-right: $spacing;
+			cursor: pointer;
+		}
+		input {
+			width: 100%;
+			box-sizing: border-box;
+		}
+	}
+	.suggestion {
+		span {
+			padding-right: $spacing;
+			cursor: pointer;
+		}
+		.selected {
+			background-color: black;
+			color: white;
+		}
+	}
+}

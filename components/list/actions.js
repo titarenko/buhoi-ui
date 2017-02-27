@@ -1,6 +1,5 @@
 module.exports = {
-	initializeQuery,
-	removeQuery,
+	resetQuery,
 
 	setFilter,
 	setGrouping,
@@ -12,21 +11,8 @@ module.exports = {
 	invalidate,
 }
 
-function initializeQuery (overrides) {
-	return {
-		type: 'LIST_SET_QUERY',
-		query: {
-			grouping: { },
-			filtering: { },
-			sorting: { },
-			paging: { },
-			...overrides,
-		}
-	}
-}
-
-function removeQuery () {
-	return { type: 'LIST_SET_QUERY', query: null }
+function resetQuery (overrides) {
+	return { type: 'LIST_SET_QUERY', query: overrides }
 }
 
 function setFilter (field, value, invalidateList) {
@@ -50,15 +36,15 @@ function setPageSize (size, invalidateList = true) {
 }
 
 function loadItems (resource, query) {
-	return dispatch => {
-		dispatch({ type: 'LIST_LOADING_STARTED' })
-		resource(encodeURIComponent(JSON.stringify(query)))
+	return dispatch => dispatch({
+		type: 'LIST_LOADING_STARTED',
+		request: resource(encodeURIComponent(JSON.stringify(query)))
 			.then(r => dispatch(r.statusCode < 400
 				? { type: 'LIST_LOADING_SUCCEEDED', items: r.body }
-				: { type: 'LIST_LOADING_FAILED', reason: r.body })
+				: { type: 'LIST_LOADING_FAILED', reason: r.body || r.statusCode })
 			)
 			.catch(error => dispatch({ type: 'LIST_LOADING_ABORTED', error }))
-	}
+	})
 }
 
 function invalidate () {

@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 
 module.exports = {
-	entry: './index.js',
+	entry: './components/index.js',
 	output: {
 		path: __dirname,
 		filename: 'dist.js',
@@ -9,6 +9,7 @@ module.exports = {
 	},
 	externals: {
 		'inferno': { commonjs2: 'inferno' },
+		'buhoi-client': { commonjs2: 'buhoi-client' },
 		'lodash.get': { commonjs2: 'lodash.get' },
 		'lodash.set': { commonjs2: 'lodash.set' },
 	},
