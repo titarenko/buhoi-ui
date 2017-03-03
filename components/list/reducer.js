@@ -29,9 +29,9 @@ function items (state = null, action) {
 		case 'LIST_SET_GROUPING':
 		case 'LIST_SET_SORTING': return action.invalidate ? null : state
 		case 'LIST_LOADING_STARTED': return null
-		case 'LIST_LOADING_SUCCEEDED': return action.items
+		case 'LIST_LOADING_SUCCEEDED': return action.result
 		case 'LIST_LOADING_FAILED':
-		case 'LIST_LOADING_ABORTED': return null
+		case 'LIST_LOADING_FORBIDDEN': return null
 		default: return state
 	}
 }
@@ -41,7 +41,7 @@ function request (state = null, action) {
 		case 'LIST_LOADING_STARTED': return action.request
 		case 'LIST_LOADING_SUCCEEDED':
 		case 'LIST_LOADING_FAILED':
-		case 'LIST_LOADING_ABORTED': return null
+		case 'LIST_LOADING_FORBIDDEN': return null
 		default: return state
 	}
 }
@@ -50,8 +50,8 @@ function error (state = null, action) {
 	switch (action.type) {
 		case 'LIST_LOADING_STARTED':
 		case 'LIST_LOADING_SUCCEEDED': return null
-		case 'LIST_LOADING_FAILED':
-		case 'LIST_LOADING_ABORTED': return action.reason
+		case 'LIST_LOADING_FAILED': return action.reason
+		case 'LIST_LOADING_FORBIDDEN': return 'Forbidden.'
 		default: return state
 	}
 }

@@ -1,3 +1,5 @@
+const { rest } = require('buhoi-client')
+
 module.exports = {
 	resetQuery,
 
@@ -36,15 +38,7 @@ function setPageSize (size, invalidateList = true) {
 }
 
 function loadItems (resource, query) {
-	return dispatch => dispatch({
-		type: 'LIST_LOADING_STARTED',
-		request: resource(encodeURIComponent(JSON.stringify(query)))
-			.then(r => dispatch(r.statusCode < 400
-				? { type: 'LIST_LOADING_SUCCEEDED', items: r.body }
-				: { type: 'LIST_LOADING_FAILED', reason: r.body || r.statusCode })
-			)
-			.catch(error => dispatch({ type: 'LIST_LOADING_ABORTED', error }))
-	})
+	return rest.read('LIST_LOADING', resource, { query })
 }
 
 function invalidate () {
