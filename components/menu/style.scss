@@ -1,0 +1,15 @@
+.menu {
+	a {
+		text-decoration: none;
+		border-bottom: 1px solid black;
+		padding: 4px;
+		&:hover, &:visited:hover, &.active, &.active:visited {
+			background: black;
+			color: white;
+		}
+		&, &:visited {
+			color: black;
+			background: white;
+		}
+	}
+}
