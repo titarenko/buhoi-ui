@@ -6,4 +6,5 @@ module.exports = {
 	Multiselect: require('./multiselect'),
 	Menu: require('./menu'),
 	Same: require('./same'),
+	TextInput: require('./text-input'),
 }
