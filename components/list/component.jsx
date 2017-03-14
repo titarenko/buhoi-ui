@@ -9,10 +9,9 @@ function List (props) {
 		defaultQuery,
 
 		query,
-		
+
 		Query = NoQuery,
-		Head,
-		Body,
+		Table,
 		Loading = DefaultLoading,
 		LoadingError = DefaultLoadingError,
 		Empty = DefaultEmpty,
@@ -20,12 +19,8 @@ function List (props) {
 		dispatch,
 	} = props
 
-	if (!Head) {
-		throw new Error('Table without head? Something new, do not understand.')
-	}
-
-	if (!Body) {
-		throw new Error('Table without body? Something new, do not understand.')
+	if (!Table) {
+		throw new Error('Table is required.')
 	}
 
 	if (isNotInitialized(props)) {
@@ -52,10 +47,7 @@ function List (props) {
 
 	return <div>
 		{Query(props)}
-		<table>
-			<Head {...props} />
-			<Body {...props} />
-		</table>
+		{Table(props)}
 	</div>
 }
 
@@ -92,6 +84,6 @@ function DefaultLoading () {
 
 function DefaultLoadingError ({ error }) {
 	return error
-		? <p>Loading error: {error}</p>
+		? <p>Loading error: {error.message}</p>
 		: <p>Loading error</p>
 }

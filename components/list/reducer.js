@@ -50,8 +50,7 @@ function error (state = null, action) {
 	switch (action.type) {
 		case 'LIST_LOADING_STARTED':
 		case 'LIST_LOADING_SUCCEEDED': return null
-		case 'LIST_LOADING_FAILED': return action.reason
-		case 'LIST_LOADING_FORBIDDEN': return 'Forbidden.'
+		case 'LIST_LOADING_FAILED': return action.error
 		default: return state
 	}
 }
