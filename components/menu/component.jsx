@@ -10,7 +10,11 @@ function Menu ({ route, items, dispatch }) {
 		return <Same />
 	}
 	return <div className="menu">
-		{items.map(it => <a href={it.url} onClick={e => handleClick(e, it.url)} className={route.url.includes(it.url) ? 'active' : null}>{it.title}</a>)}
+		{items.map(it => <a
+			href={it.url}
+			onClick={e => handleClick(e, it.url)}
+			className={route.url.includes(it.url) ? 'active' : null}
+		>{it.title}</a>)}
 	</div>
 	function handleClick (e, url) {
 		e.preventDefault()

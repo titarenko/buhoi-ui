@@ -12,7 +12,7 @@ Multiselect.reducer = combineReducers({
 })
 
 function Multiselect (props) {
-	const { resource, value, query, suggestedItems, selectedSuggestionIndex, selectedItems, onChange, dispatch } = props
+	const { resource, query, suggestedItems, selectedSuggestionIndex, selectedItems, dispatch } = props
 
 	return <div className="multiselect">
 		<div className="input">
@@ -21,9 +21,9 @@ function Multiselect (props) {
 				type="text"
 				value={query}
 				onKeyDown={handleKeypress}
-				onInput={e => dispatch(suggest(resource, e.target.value))}
-				onBlur={e => dispatch(finishSuggestion())}
-				onFocus={e => dispatch(suggest(resource, query))}
+				onInput={ev => dispatch(suggest(resource, ev.target.value))}
+				onBlur={ev_ => dispatch(finishSuggestion())}
+				onFocus={ev_ => dispatch(suggest(resource, query))}
 			/>
 		</div>
 		{suggestedItems ? <div className="suggestion">
@@ -36,7 +36,7 @@ function Multiselect (props) {
 
 	function handleKeypress (e) {
 		if (e.keyCode == 8 && !query) {
-			dispatch(removeLast());
+			dispatch(removeLast())
 		}
 		if (e.keyCode == 38 && selectedSuggestionIndex > 0) {
 			e.preventDefault()
@@ -112,7 +112,7 @@ function suggest (resource, query) {
 				? dispatch({ type: 'MULTISELECT_SUGGESTION_SUCCEEDED', items: r.body })
 				: dispatch({ type: 'MULTISELECT_SUGGESTION_FAILED', reason: r.body || r.statusCode })
 			)
-			.catch(error => dispatch({ type: 'MULTISELECT_SUGGESTION_ABORTED', reason: error }))
+			.catch(error => dispatch({ type: 'MULTISELECT_SUGGESTION_ABORTED', reason: error })),
 	})
 }
 
