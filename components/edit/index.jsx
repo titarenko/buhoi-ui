@@ -8,17 +8,27 @@ Edit.actions = { setField, reset }
 Edit.reducer = combineReducers({
 	request: requestReducer,
 	fields: fieldsReducer,
+	error: errorReducer,
 	validationErrors: validationErrorsReducer,
-	isSavingFinished: isSavingFinishedReducer,
+	isEditingFinished: isEditingFinishedReducer,
 })
 
 function Edit (props) {
-	const { resource, id, dispatch, onFinish, Form } = props
+	const { resource, id, removable, restorable, dispatch, onFinish } = props
+	const { Form, Loading = DefaultLoading, Error = DefaultError } = props
 	const { fields, validationErrors } = props
 
 	if (isNotLoaded(props)) {
 		dispatch(loadFields(resource, id))
 		return <Same />
+	}
+
+	if (isLoading(props)) {
+		return <Loading {...props} />
+	}
+
+	if (isError(props)) {
+		return <Error {...props} />
 	}
 
 	if (isNotInitialized(props)) {
@@ -34,6 +44,8 @@ function Edit (props) {
 	return <form onSubmit={handleSubmit}>
 		{Form({ fields, validationErrors, dispatch, setField })}
 		<input type="submit" value="сохранить" />
+		{id && removable ? <button onClick={handleRemove}>удалить</button> : null}
+		{id && restorable ? <button onClick={handleRestore}>восстановить</button> : null}
 		<button onClick={handleFinish}>отмена</button>
 	</form>
 
@@ -42,22 +54,44 @@ function Edit (props) {
 		dispatch(saveFields(resource, fields))
 	}
 
+	function handleRemove (e) {
+		e.preventDefault()
+		if (confirm('Подтвердите удаление.')) {
+			dispatch(removeItem(resource, id))
+		}
+	}
+
+	function handleRestore (e) {
+		e.preventDefault()
+		if (confirm('Подтвердите восстановление')) {
+			dispatch(restoreItem(resource, id))
+		}
+	}
+
 	function handleFinish (e) {
 		e.preventDefault()
 		dispatch(cancelEditing())
 	}
 }
 
-function isNotLoaded ({ id, fields, request }) {
-	return id && fields == null && request == null
+function isNotLoaded ({ id, fields, request, error }) {
+	return id && fields == null && request == null && error == null
+}
+
+function isLoading ({ request }) {
+	return request
+}
+
+function isError ({ error }) {
+	return error
 }
 
 function isNotInitialized ({ id, fields }) {
 	return !id && fields == null
 }
 
-function isFinished ({ isSavingFinished }) {
-	return isSavingFinished
+function isFinished ({ isEditingFinished }) {
+	return isEditingFinished
 }
 
 function loadFields (resource, id) {
@@ -66,6 +100,14 @@ function loadFields (resource, id) {
 
 function saveFields (resource, fields) {
 	return rest.write('EDIT_SAVING', resource, fields)
+}
+
+function removeItem (resource, id) {
+	return rest.remove('EDIT_REMOVING', resource, id)
+}
+
+function restoreItem (resource, id) {
+	return rest.write('EDIT_RESTORING', `${resource}.restore`, { id })
 }
 
 function initializeFields () {
@@ -110,13 +152,32 @@ function validationErrorsReducer (state = { }, action) {
 	switch (action.type) {
 		case 'EDIT_SAVING_STARTED':
 		case 'EDIT_SAVING_SUCCEEDED': return { }
-		case 'EDIT_SAVING_FAILED': return action.error.code == 400 ? action.error.body : { }
+		case 'EDIT_SAVING_FAILED': return action.error.statusCode == 400 ? action.error.body : { }
 		case 'EDIT_RESET': return { }
 		default: return state
 	}
 }
 
-function isSavingFinishedReducer (state = false, action) {
+function errorReducer (state = null, action) {
+	switch (action.type) {
+		case 'EDIT_LOADING_STARTED':
+		case 'EDIT_LOADING_SUCCEEDED': return null
+		case 'EDIT_LOADING_FAILED': return action.error
+		case 'EDIT_SAVING_STARTED':
+		case 'EDIT_SAVING_SUCCEEDED': return null
+		case 'EDIT_SAVING_FAILED': return action.error
+		case 'EDIT_REMOVING_STARTED':
+		case 'EDIT_REMOVING_SUCCEEDED': return null
+		case 'EDIT_REMOVING_FAILED': return action.error
+		case 'EDIT_RESTORING_STARTED':
+		case 'EDIT_RESTORING_SUCCEEDED': return null
+		case 'EDIT_RESTORING_FAILED': return action.error
+		case 'EDIT_RESET': return null
+		default: return state
+	}
+}
+
+function isEditingFinishedReducer (state = false, action) {
 	switch (action.type) {
 		case 'EDIT_INITIALIZE_FIELDS': return false
 		case 'EDIT_LOADING_STARTED': return false
@@ -124,6 +185,18 @@ function isSavingFinishedReducer (state = false, action) {
 		case 'EDIT_SAVING_SUCCEEDED': return true
 		case 'EDIT_CANCEL': return true
 		case 'EDIT_RESET': return false
+		case 'EDIT_REMOVING_STARTED': return false
+		case 'EDIT_REMOVING_SUCCEEDED': return true
+		case 'EDIT_RESTORING_STARTED': return false
+		case 'EDIT_RESTORING_SUCCEEDED': return true
 		default: return state
 	}
+}
+
+function DefaultLoading () {
+	return <p>Loading...</p>
+}
+
+function DefaultError ({ error }) {
+	return <p>Error: {error.message}</p>
 }
