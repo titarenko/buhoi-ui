@@ -14,9 +14,8 @@ Edit.reducer = combineReducers({
 })
 
 function Edit (props) {
-	const { resource, id, removable, restorable, dispatch, onFinish } = props
+	const { resource, id, fields, removable, restorable, dispatch, onFinish } = props
 	const { Form, Loading = DefaultLoading, Error = DefaultError } = props
-	const { fields, validationErrors } = props
 
 	if (isNotLoaded(props)) {
 		dispatch(loadFields(resource, id))
@@ -42,10 +41,10 @@ function Edit (props) {
 	}
 
 	return <form onSubmit={handleSubmit}>
-		{Form({ fields, validationErrors, dispatch, setField })}
+		{Form(props)}
 		<input type="submit" value="сохранить" />
-		{id && removable ? <button onClick={handleRemove}>удалить</button> : null}
-		{id && restorable ? <button onClick={handleRestore}>восстановить</button> : null}
+		{id != null && removable ? <button onClick={handleRemove}>удалить</button> : null}
+		{id != null && restorable ? <button onClick={handleRestore}>восстановить</button> : null}
 		<button onClick={handleFinish}>отмена</button>
 	</form>
 
@@ -75,7 +74,7 @@ function Edit (props) {
 }
 
 function isNotLoaded ({ id, fields, request, error }) {
-	return id && fields == null && request == null && error == null
+	return id != null && fields == null && request == null && error == null
 }
 
 function isLoading ({ request }) {
@@ -87,7 +86,7 @@ function isError ({ error }) {
 }
 
 function isNotInitialized ({ id, fields }) {
-	return !id && fields == null
+	return id == null && fields == null
 }
 
 function isFinished ({ isEditingFinished }) {
@@ -161,19 +160,22 @@ function validationErrorsReducer (state = { }, action) {
 function errorReducer (state = null, action) {
 	switch (action.type) {
 		case 'EDIT_LOADING_STARTED':
-		case 'EDIT_LOADING_SUCCEEDED': return null
-		case 'EDIT_LOADING_FAILED': return action.error
 		case 'EDIT_SAVING_STARTED':
-		case 'EDIT_SAVING_SUCCEEDED': return null
-		case 'EDIT_SAVING_FAILED': return action.error
 		case 'EDIT_REMOVING_STARTED':
-		case 'EDIT_REMOVING_SUCCEEDED': return null
-		case 'EDIT_REMOVING_FAILED': return action.error
 		case 'EDIT_RESTORING_STARTED':
-		case 'EDIT_RESTORING_SUCCEEDED': return null
-		case 'EDIT_RESTORING_FAILED': return action.error
-		case 'EDIT_RESET': return null
-		default: return state
+		case 'EDIT_LOADING_SUCCEEDED':
+		case 'EDIT_SAVING_SUCCEEDED':
+		case 'EDIT_REMOVING_SUCCEEDED':
+		case 'EDIT_RESTORING_SUCCEEDED':
+		case 'EDIT_RESET':
+			return null
+		case 'EDIT_LOADING_FAILED':
+		case 'EDIT_SAVING_FAILED':
+		case 'EDIT_REMOVING_FAILED':
+		case 'EDIT_RESTORING_FAILED':
+			return action.error.statusCode != 400 ? action.error : null
+		default:
+			return state
 	}
 }
 
