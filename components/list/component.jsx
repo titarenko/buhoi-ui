@@ -12,6 +12,7 @@ function List (props) {
 
 		Query = NoQuery,
 		Table,
+		Toolbar = NoToolbar,
 		Loading = DefaultLoading,
 		LoadingError = DefaultLoadingError,
 		Empty = DefaultEmpty,
@@ -47,6 +48,7 @@ function List (props) {
 
 	return <div>
 		{Query(props)}
+		{Toolbar(props)}
 		{Table(props)}
 	</div>
 }
@@ -73,6 +75,8 @@ function isEmpty ({ items }) {
 
 function NoQuery () {
 }
+
+function NoToolbar () {}
 
 function DefaultEmpty () {
 	return <p>No data.</p>

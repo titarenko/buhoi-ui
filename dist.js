@@ -64,7 +64,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 25);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -75,6 +75,19 @@ module.exports = require("buhoi-client");
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var inferno = __webpack_require__(21);
+
+module.exports = function () {
+	return inferno.NO_OP;
+};
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 /*
@@ -130,7 +143,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 /*
@@ -382,19 +395,6 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var inferno = __webpack_require__(24);
-
-module.exports = function () {
-	return inferno.NO_OP;
-};
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -472,7 +472,7 @@ var _require = __webpack_require__(0),
     rest = _require.rest,
     combineReducers = _require.combineReducers;
 
-var Same = __webpack_require__(3);
+var Same = __webpack_require__(1);
 
 module.exports = Edit;
 
@@ -757,9 +757,9 @@ function DefaultError(_ref6) {
 "use strict";
 
 
-module.exports = __webpack_require__(12);
+module.exports = __webpack_require__(11);
 module.exports.actions = __webpack_require__(4);
-module.exports.reducer = __webpack_require__(13);
+module.exports.reducer = __webpack_require__(12);
 
 /***/ }),
 /* 7 */
@@ -768,7 +768,7 @@ module.exports.reducer = __webpack_require__(13);
 "use strict";
 
 
-module.exports = __webpack_require__(14);
+module.exports = __webpack_require__(13);
 
 /***/ }),
 /* 8 */
@@ -782,7 +782,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var _require = __webpack_require__(0),
     combineReducers = _require.combineReducers;
 
-__webpack_require__(21);
+__webpack_require__(19);
 
 module.exports = Multiselect;
 
@@ -972,165 +972,9 @@ function finishSuggestion() {
 "use strict";
 
 
-var _require = __webpack_require__(0),
-    combineReducers = _require.combineReducers;
-
-__webpack_require__(22);
-
-module.exports = Select;
-
-Select.reducer = combineReducers({
-	query: queryReducer,
-	selectedItem: selectedItemReducer,
-	suggestedItems: suggestedItemsReducer,
-	selectedSuggestionIndex: selectedSuggestionIndexReducer
-});
-
-var createVNode = Inferno.createVNode;
-function Select(props) {
-	var resource = props.resource,
-	    query = props.query,
-	    suggestedItems = props.suggestedItems,
-	    selectedSuggestionIndex = props.selectedSuggestionIndex,
-	    _props$selectedItem = props.selectedItem,
-	    selectedItem = _props$selectedItem === undefined ? {} : _props$selectedItem,
-	    dispatch = props.dispatch;
-
-
-	return createVNode(2, 'div', null, [createVNode(512, 'input', {
-		'type': 'text',
-		'list': 'select'
-	}, null, {
-		'onInput': function onInput(ev) {
-			return dispatch(suggest(resource, ev.target.value));
-		},
-		'onBlur': function onBlur(ev_) {
-			return dispatch(finishSuggestion());
-		},
-		'onFocus': function onFocus(ev_) {
-			return dispatch(suggest(resource, query));
-		}
-	}), createVNode(2, 'datalist', {
-		'id': 'select'
-	}, suggestedItems.map(function (it) {
-		return createVNode(2, 'option', null, it.name);
-	}))]);
-}
-
-function queryReducer() {
-	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-	var action = arguments[1];
-
-	switch (action.type) {
-		case 'SELECT_SUGGESTION_STARTED':
-			return action.query;
-		default:
-			return state;
-	}
-}
-
-function selectedItemReducer() {
-	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-	var action = arguments[1];
-
-	switch (action.type) {
-		case 'SELECT_ADD':
-			return state.some(function (it) {
-				return it.id == action.item.id;
-			}) ? state : action.item;
-		case 'SELECT_REMOVE':
-			return [];
-		case 'SELECT_REMOVE_LAST':
-			return state.length > 0 ? state.slice(0, -1) : state;
-		default:
-			return state;
-	}
-}
-
-function suggestedItemsReducer() {
-	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-	var action = arguments[1];
-
-	switch (action.type) {
-		case 'SELECT_SUGGESTION_STARTED':
-			return null;
-		case 'SELECT_SUGGESTION_SUCCEEDED':
-			return action.items;
-		case 'SELECT_SUGGESTION_FAILED':
-		case 'SELECT_SUGGESTION_ABORTED':
-			return null;
-		case 'SELECT_FINISH_SUGGESTION':
-			return null;
-		default:
-			return state;
-	}
-}
-
-function selectedSuggestionIndexReducer() {
-	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-	var action = arguments[1];
-
-	switch (action.type) {
-		case 'SELECT_SUGGESTION_STARTED':
-			return null;
-		case 'SELECT_SUGGESTION_SUCCEEDED':
-			return 0;
-		case 'SELECT_SUGGESTION_FAILED':
-		case 'SELECT_SUGGESTION_ABORTED':
-			return null;
-		case 'SELECT_SELECT_SUGGESTION':
-			return action.index;
-		case 'SELECT_FINISH_SUGGESTION':
-			return null;
-		default:
-			return state;
-	}
-}
-
-//function add (item) {
-//	return { type: 'SELECT_ADD', item }
-//}
-//
-//function remove (item) {
-//	return { type: 'SELECT_REMOVE', item }
-//}
-//
-//function removeLast () {
-//	return { type: 'SELECT_REMOVE_LAST' }
-//}
-
-function suggest(resource, query) {
-	return function (dispatch) {
-		return dispatch({
-			type: 'SELECT_SUGGESTION_STARTED',
-			query: query,
-			request: resource(query).then(function (r) {
-				return r.statusCode < 400 ? dispatch({ type: 'SELECT_SUGGESTION_SUCCEEDED', items: r.body }) : dispatch({ type: 'SELECT_SUGGESTION_FAILED', reason: r.body || r.statusCode });
-			}).catch(function (error) {
-				return dispatch({ type: 'SELECT_SUGGESTION_ABORTED', reason: error });
-			})
-		});
-	};
-}
-
-function selectSuggestion(index) {
-	return { type: 'SELECT_SELECT_SUGGESTION', index: index };
-}
-
-function finishSuggestion() {
-	return { type: 'SELECT_FINISH_SUGGESTION' };
-}
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 module.exports = TextInput;
 
-__webpack_require__(23);
+__webpack_require__(20);
 
 var createVNode = Inferno.createVNode;
 function TextInput(_ref) {
@@ -1160,16 +1004,16 @@ function TextInput(_ref) {
 }
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(15);
+var content = __webpack_require__(14);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(3)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -1186,7 +1030,7 @@ if(false) {
 }
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1194,7 +1038,7 @@ if(false) {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var Same = __webpack_require__(3);
+var Same = __webpack_require__(1);
 
 var _require = __webpack_require__(4),
     resetQuery = _require.resetQuery,
@@ -1210,6 +1054,8 @@ function List(props) {
 	    _props$Query = props.Query,
 	    Query = _props$Query === undefined ? NoQuery : _props$Query,
 	    Table = props.Table,
+	    _props$Toolbar = props.Toolbar,
+	    Toolbar = _props$Toolbar === undefined ? NoToolbar : _props$Toolbar,
 	    _props$Loading = props.Loading,
 	    Loading = _props$Loading === undefined ? DefaultLoading : _props$Loading,
 	    _props$LoadingError = props.LoadingError,
@@ -1245,7 +1091,7 @@ function List(props) {
 		return createVNode(16, LoadingError, _extends({}, props));
 	}
 
-	return createVNode(2, 'div', null, [Query(props), Table(props)]);
+	return createVNode(2, 'div', null, [Query(props), Toolbar(props), Table(props)]);
 }
 
 function isNotInitialized(_ref) {
@@ -1282,6 +1128,8 @@ function isEmpty(_ref5) {
 
 function NoQuery() {}
 
+function NoToolbar() {}
+
 function DefaultEmpty() {
 	return createVNode(2, 'p', null, 'No data.');
 }
@@ -1297,7 +1145,7 @@ function DefaultLoadingError(_ref6) {
 }
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1397,7 +1245,7 @@ function error() {
 }
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1406,9 +1254,9 @@ function error() {
 var _require = __webpack_require__(0),
     navigateTo = _require.navigateTo;
 
-var Same = __webpack_require__(3);
+var Same = __webpack_require__(1);
 
-__webpack_require__(20);
+__webpack_require__(18);
 
 module.exports = Menu;
 
@@ -1440,10 +1288,10 @@ function Menu(_ref) {
 }
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(2)();
 // imports
 
 
@@ -1454,10 +1302,10 @@ exports.push([module.i, "html, body, #root {\n  height: 100%;\n  padding: 0;\n  
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(2)();
 // imports
 
 
@@ -1468,38 +1316,24 @@ exports.push([module.i, ".menu a {\n  text-decoration: none;\n  border-bottom: 1
 
 
 /***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
+// imports
+
+
+// module
+exports.push([module.i, ".multiselect {\n  margin-bottom: 4px; }\n  .multiselect .input {\n    width: 100%;\n    box-sizing: border-box;\n    display: flex; }\n    .multiselect .input span {\n      flex-shrink: 0;\n      border-bottom: 1px black dotted;\n      margin-right: 4px;\n      cursor: pointer; }\n    .multiselect .input input {\n      width: 100%;\n      box-sizing: border-box; }\n  .multiselect .suggestion span {\n    padding-right: 4px;\n    cursor: pointer; }\n  .multiselect .suggestion .selected {\n    background-color: black;\n    color: white; }\n", ""]);
+
+// exports
+
+
+/***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
-// imports
-
-
-// module
-exports.push([module.i, ".multiselect {\n  margin-bottom: 4px; }\n  .multiselect .input {\n    width: 100%;\n    box-sizing: border-box;\n    display: flex; }\n    .multiselect .input span {\n      flex-shrink: 0;\n      border-bottom: 1px black dotted;\n      margin-right: 4px;\n      cursor: pointer; }\n    .multiselect .input input {\n      width: 100%;\n      box-sizing: border-box; }\n  .multiselect .suggestion span {\n    padding-right: 4px;\n    cursor: pointer; }\n  .multiselect .suggestion .selected {\n    background-color: black;\n    color: white; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-// imports
-
-
-// module
-exports.push([module.i, ".multiselect {\n  margin-bottom: 4px; }\n  .multiselect .input {\n    width: 100%;\n    box-sizing: border-box;\n    display: flex; }\n    .multiselect .input span {\n      flex-shrink: 0;\n      border-bottom: 1px black dotted;\n      margin-right: 4px;\n      cursor: pointer; }\n    .multiselect .input input {\n      width: 100%;\n      box-sizing: border-box; }\n  .multiselect .suggestion span {\n    padding-right: 4px;\n    cursor: pointer; }\n  .multiselect .suggestion .selected {\n    background-color: black;\n    color: white; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(2)();
 // imports
 
 
@@ -1510,7 +1344,33 @@ exports.push([module.i, "label span, label input {\n  box-sizing: border-box;\n 
 
 
 /***/ }),
-/* 20 */
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(15);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(3)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -1519,7 +1379,33 @@ exports.push([module.i, "label span, label input {\n  box-sizing: border-box;\n 
 var content = __webpack_require__(16);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(3)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(17);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(3)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -1537,105 +1423,26 @@ if(false) {
 
 /***/ }),
 /* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(17);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(18);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(19);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = require("inferno");
 
 /***/ }),
-/* 25 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(11);
+__webpack_require__(10);
 
 module.exports = {
 	List: __webpack_require__(6),
 	Edit: __webpack_require__(5),
 	Multiselect: __webpack_require__(8),
 	Menu: __webpack_require__(7),
-	Same: __webpack_require__(3),
-	TextInput: __webpack_require__(10),
-	Select: __webpack_require__(9)
+	Same: __webpack_require__(1),
+	TextInput: __webpack_require__(9)
 };
 
 /***/ })
