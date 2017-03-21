@@ -12,9 +12,10 @@ Multiselect.reducer = combineReducers({
 })
 
 function Multiselect (props) {
-	const { resource, query, suggestedItems, selectedSuggestionIndex, selectedItems, dispatch } = props
+	const { resource, label, query, suggestedItems, selectedSuggestionIndex, selectedItems = [], dispatch } = props
 
 	return <div className="multiselect">
+		<span>{label}</span>
 		<div className="input">
 			{selectedItems.map(it => <span onClick={() => dispatch(remove(it))}>{it.name} &#10005;</span>)}
 			<input
