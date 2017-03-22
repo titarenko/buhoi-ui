@@ -1,0 +1,74 @@
+.range ul {
+	white-space: nowrap;
+}
+.range li {
+	list-style-type: none;
+}
+.range li span {
+	color: #08c;
+	border-bottom: 1px dotted;
+	cursor: pointer;
+	text-decoration: none;
+}
+.range li span:hover {
+	text-decoration: none;
+	color: #005580;
+}
+.date-range-filter {
+	display: inline-block;
+}
+
+.date-range-filter .filter {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+
+	font-size: 0.9em;
+	padding: 10px;
+	margin-right: 6px;
+	margin-bottom: 8px;
+
+	border: 1px solid #e0e1e1;
+	color: #939393;
+}
+
+.date-range-filter .filter.editing {
+	border: 1px solid #1dc025;
+	background-color: #1dc025;
+	color: #fff;
+	z-index: 2000;
+}
+
+.date-range-filter .overlay {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: transparent;
+	z-index:1000
+}
+
+.date-range-filter .caption {
+	display: inline-block;
+	width: 100%;
+}
+
+.date-range-filter .editor {
+	position: absolute;
+	left: -1px;
+	top: 100%;
+	border: 1px solid #1dc025;
+	color: #939393;
+	background-color: #fafafa;
+	z-index: 10;
+	padding: 10px;
+}
+
+.date-range-filter .range {
+	display: flex;
+}
+
+.date-range-filter calendar:first-child {
+	margin-right: 10px;
+}
