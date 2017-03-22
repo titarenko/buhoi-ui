@@ -1,13 +1,9 @@
 require('./style.scss')
 
 const { combineReducers } = require('buhoi-client')
-
 const Calendar = require('../calendar')
 
 const moment = require('moment')
-
-const weekDays = moment.weekdaysShort()
-const firstWeekday = moment.localeData()._week.dow
 const periods = [
 	{
 		name: 'за сегодня',
