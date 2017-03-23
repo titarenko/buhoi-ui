@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 
 module.exports = {
-	entry: './components/index.js',
+	entry: './components/index.jsx',
 	output: {
 		path: __dirname,
 		filename: 'dist.js',
@@ -34,9 +34,17 @@ module.exports = {
 	},
 	plugins: process.env.NODE_ENV == 'development' ? [
 		new webpack.ProvidePlugin({ 'Inferno': 'inferno' }),
-		new webpack.DefinePlugin('process.env.NODE_ENV', JSON.stringify(process.env.NODE_ENV)),
+		new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) }),
 	] : undefined,
 	resolve: { extensions: ['.js', '.jsx'] },
 	devtool: 'source-map',
-	devServer: { contentBase: __dirname },
+	devServer: {
+		contentBase: __dirname,
+		proxy: {
+			'/api/*': {
+				target: 'http://localhost:3000',
+				pathRewrite: { '/api' : '' },
+			},
+		},
+	},
 }

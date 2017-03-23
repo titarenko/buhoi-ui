@@ -22,7 +22,7 @@ module.exports = {
 		Map: true,
 		console: true,
 
-		webMoney: true,
+		Inferno: true,
 	},
 	extends: ['eslint:recommended', 'plugin:react/recommended'],
 	rules: {
