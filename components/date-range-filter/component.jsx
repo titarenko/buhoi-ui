@@ -69,6 +69,7 @@ DateRangeFilter.reducer = combineReducers({
 	editing: editingReducer,
 	dateRangeFilter: dateRangeFilterReducer,
 })
+module.exports.actions = { setDateRangeFilter }
 
 function DateRangeFilter ({ dispatch, editing=false, dateRangeFilter, onChange }) {
 
