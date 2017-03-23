@@ -23,10 +23,11 @@ module.exports = components
 if (process.env.NODE_ENV == 'development') {
 	const { createStore, combineReducers, applyMiddleware } = require('redux')
 	const logger = require('redux-logger')
+	const reduxThunk = require('redux-thunk')
 
 	const reducer = combineReducers({ textInput: TextInput.reducer, geo: SelectList.reducer })
-
-	const store = createStore(reducer, applyMiddleware(logger()))
+	const middleware = applyMiddleware(reduxThunk.default, logger())
+	const store = createStore(reducer, middleware)
 
 	store.subscribe(() => {
 		const props = { ...store.getState(), dispatch: store.dispatch }
