@@ -81,8 +81,8 @@ function DateRangeFilter ({ dispatch, editing=false, dateRangeFilter, onChange }
 		return
 	}
 
-	const toggleEditing = () => dispatch({ type: 'SET_DRF_EDITING', editing: !editing })
-	const dismiss = () => dispatch({ type: 'SET_DRF_EDITING', editing: false })
+	const toggleEditing = () => dispatch({ type: 'SET_DATE_RANGE_FILTER_EDITING', editing: !editing })
+	const dismiss = () => dispatch({ type: 'SET_DATE_RANGE_FILTER_EDITING', editing: false })
 
 	const changeBegin = d => {
 		const beginDate = d.startOf('day').toDate()
@@ -130,7 +130,7 @@ function DateRangeFilter ({ dispatch, editing=false, dateRangeFilter, onChange }
 
 function editingReducer (state = null, action) {
 	switch (action.type) {
-		case 'SET_DRF_EDITING': return action.editing
+		case 'SET_DATE_RANGE_FILTER_EDITING': return action.editing
 		default: return state
 	}
 }
