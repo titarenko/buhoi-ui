@@ -52,9 +52,9 @@ if (process.env.NODE_ENV == 'development') {
 		return <div>
 			<p>soooqa: {textInput.value}</p>
 			<TextInput {...textInput} label="text input 1" onChange={v => dispatch(TextInput.actions.setValue(v))} />
-			<p>pzdc: {select.value.id}</p>
 			<Select {...select}
 				resource="/api/countries"
+				label="Super Select"
 				onChange={v => dispatch(Select.actions.setValue(v))}
 				dispatch={dispatch} />
 		</div>

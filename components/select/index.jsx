@@ -12,7 +12,7 @@ module.exports.reducer = combineReducers({
 })
 
 function Select (props) {
-	const { resource, query, request, value, items, dispatch, onChange } = props
+	const { resource, query, request, value, items, dispatch, onChange, label } = props
 
 	if (!items && resource && !request) {
 		dispatch(fetch(resource, query))
@@ -23,9 +23,12 @@ function Select (props) {
 		return <Same />
 	}
 
-	return <select onChange={handleChange} className="select">{items.map(it =>
-		<option value={it.id} selected={value && it.id == value.id}>{it.name}</option>
-	)}</select>
+	return <div className="select">
+		<span>{label}</span>
+		<select onChange={handleChange}>{items.map(it =>
+			<option value={it.id} selected={value && it.id == value.id}>{it.name}</option>
+		)}</select>
+	</div>
 
 	function handleChange (ev) {
 		const id = ev.target.value
