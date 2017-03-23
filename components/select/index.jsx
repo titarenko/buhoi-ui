@@ -1,6 +1,8 @@
 const { rest, combineReducers } = require('buhoi-client')
 const Same = require('../same')
 
+require('./style.scss')
+
 module.exports = Select
 module.exports.actions = { setValue }
 module.exports.reducer = combineReducers({
@@ -21,7 +23,7 @@ function Select (props) {
 		return <Same />
 	}
 
-	return <select onChange={handleChange}>{items.map(it =>
+	return <select onChange={handleChange} className="select">{items.map(it =>
 		<option value={it.id} selected={value && it.id == value.id}>{it.name}</option>
 	)}</select>
 
