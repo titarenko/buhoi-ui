@@ -33,12 +33,14 @@ if (process.env.NODE_ENV == 'development') {
 
 	const store = createStore(reducers, applyMiddleware(logger()))
 
-	store.subscribe(() => {
+	store.subscribe(() => setTimeout(render,0))
+
+	function render () { // eslint-disable-line no-inner-declarations
 		const props = { ...store.getState(), dispatch: store.dispatch }
 		const dom = AllComponents(props)
 		const node = document.getElementById('root')
 		Inferno.render(dom, node)
-	})
+	}
 
 	store.dispatch(TextInput.actions.setValue('hi'))
 
@@ -49,7 +51,7 @@ if (process.env.NODE_ENV == 'development') {
 	function AllComponents ({ textInput, dateRangeFilter, dispatch }) { // eslint-disable-line no-inner-declarations
 		return <div>
 			<TextInput {...textInput} label="text input" onChange={v => dispatch(TextInput.actions.setValue(v))} />
-			<DateRangeFilter {...dateRangeFilter} onChange={ d => d } dispatch={ dispatch } />
+			<DateRangeFilter {...dateRangeFilter} onChange={() => null} dispatch={dispatch} />
 		</div>
 	}
 }

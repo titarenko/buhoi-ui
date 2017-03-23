@@ -71,7 +71,7 @@ DateRangeFilter.reducer = combineReducers({
 })
 module.exports.actions = { setDateRangeFilter }
 
-function DateRangeFilter ({ dispatch, editing=false, dateRangeFilter, onChange }) {
+function DateRangeFilter ({ editing=false, dateRangeFilter, onChange, dispatch }) {
 
 	if (!dateRangeFilter) {
 		onChange(dispatch(setDateRangeFilter([
@@ -137,11 +137,11 @@ function editingReducer (state = null, action) {
 
 function dateRangeFilterReducer (state = null, action) {
 	switch (action.type) {
-		case 'SET_DATE_RANGE_FILTER': return action.value
+		case 'SET_DATE_RANGE_FILTER_RANGE': return action.value
 		default: return state
 	}
 }
 
 function setDateRangeFilter (value) {
-	return { type: 'SET_DATE_RANGE_FILTER', value }
+	return { type: 'SET_DATE_RANGE_FILTER_RANGE', value }
 }
