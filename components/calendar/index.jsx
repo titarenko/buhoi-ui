@@ -10,12 +10,12 @@ const dayNames = weekDays.map((name, index) => weekDays[(index + firstWeekday)%7
 module.exports = Calendar
 
 Calendar.reducer = valueReducer
-
+Calendar.actions = { setDate }
 function Calendar (props){
-	const {	value, onChange, dispatch } = props
+	const { value, onChange } = props
 
 	if (!value) {
-		onChange(dispatch(setDate(moment(new Date()))).value)
+		onChange(moment(new Date()))
 		return
 	}
 
@@ -41,11 +41,11 @@ function Calendar (props){
 	weeks[weeks.length - 1] =  lastWeek.map(it => it ? it : dateNextMonth)
 
 	function addMonth (count) {
-		onChange(dispatch(setDate(moment(value).add(count, 'month'))).value)
+		onChange(moment(value).add(count, 'month'))
 	}
 
 	function selectDay (day) {
-		onChange(dispatch(setDate(moment(value).date(day))).value)
+		onChange(moment(value).date(day))
 	}
 
 	function getDayClass (day){
@@ -81,11 +81,11 @@ function Calendar (props){
 
 function valueReducer (state = null, action) {
 	switch (action.type) {
-		case 'SET_CALENDAR_DATE': return action.value
+		case 'SET_CALENDAR_VALUE': return action.value
 		default: return state
 	}
 }
 
 function setDate (value) {
-	return { type: 'SET_CALENDAR_DATE', value }
+	return { type: 'SET_CALENDAR_VALUE', value }
 }
