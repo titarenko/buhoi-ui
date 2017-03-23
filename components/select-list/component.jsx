@@ -1,12 +1,12 @@
 const { add, suggest, selectSuggestion, finishSuggestion } = require('./actions')
 
 require('./style.scss')
-module.exports = Selectfilter
+module.exports = SelectList
 
-function Selectfilter (props) {
+function SelectList (props) {
 	const { resource, query, suggestedItems, selectedSuggestionIndex, selectedItem, dispatch, onChange } = props
 
-	return <div className="selectfilter">
+	return <div className="select-list">
 	<div>
 		<input
 			readOnly
