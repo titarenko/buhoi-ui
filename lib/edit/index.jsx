@@ -1,4 +1,5 @@
-const { rest, combineReducers } = require('buhoi-client')
+const { combineReducers } = require('redux')
+const { actions: { read, write, remove } } = require('buhoi-client')
 const Same = require('../same')
 
 module.exports = Edit
@@ -94,19 +95,19 @@ function isFinished ({ isEditingFinished }) {
 }
 
 function loadFields (resource, id) {
-	return rest.read('EDIT_LOADING', `${resource}/${id}`)
+	return read('EDIT_LOADING', `${resource}/${id}`)
 }
 
 function saveFields (resource, fields) {
-	return rest.write('EDIT_SAVING', resource, fields)
+	return write('EDIT_SAVING', resource, fields)
 }
 
 function removeItem (resource, id) {
-	return rest.remove('EDIT_REMOVING', resource, id)
+	return remove('EDIT_REMOVING', resource, id)
 }
 
 function restoreItem (resource, id) {
-	return rest.write('EDIT_RESTORING', `${resource}.restore`, { id })
+	return write('EDIT_RESTORING', `${resource}.restore`, { id })
 }
 
 function initializeFields () {

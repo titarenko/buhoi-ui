@@ -24,7 +24,7 @@ if (process.env.NODE_ENV == 'development') {
 
 	const reducer = combineReducers({ textInput: TextInput.reducer })
 
-	const store = createStore(reducer, applyMiddleware(logger()))
+	const store = createStore(reducer, applyMiddleware(logger.default))
 
 	store.subscribe(() => {
 		const props = { ...store.getState(), dispatch: store.dispatch }

@@ -1,4 +1,4 @@
-const { combineReducers } = require('buhoi-client')
+const { combineReducers } = require('redux')
 
 module.exports = TextInput
 module.exports.reducer = combineReducers({ value: valueReducer })
