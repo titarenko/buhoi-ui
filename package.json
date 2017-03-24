@@ -2,7 +2,7 @@
   "name": "buhoi-ui",
   "version": "1.0.2",
   "description": "UI components for buhoi framework.",
-  "main": "dist.js",
+  "main": "./dist/bundle.js",
   "repository": {
     "url": "git@github.com:titarenko/buhoi-ui.git",
     "type": "git"
@@ -19,6 +19,7 @@
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-es2017": "^6.22.0",
     "babel-preset-stage-0": "^6.22.0",
+    "buhoi-client": "^2.0.2",
     "css-loader": "^0.26.1",
     "eslint": "^3.5.0",
     "eslint-plugin-func-call": "^1.0.3",
@@ -42,7 +43,7 @@
   "babel": {},
   "scripts": {
     "start": "json-server --watch mocks.json & NODE_ENV=development webpack-dev-server --inline --hot",
-    "build": "webpack -p",
+    "build": "NODE_ENV=production webpack -p",
     "lint": "eslint . --ext .js,.jsx",
     "precommit": "lint-staged",
     "prepush": "npm run lint",

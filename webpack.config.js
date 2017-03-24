@@ -1,10 +1,10 @@
 const webpack = require('webpack')
 
 module.exports = {
-	entry: './components/index.jsx',
+	entry: './lib/index.jsx',
 	output: {
-		path: __dirname,
-		filename: 'dist.js',
+		path: './dist',
+		filename: 'bundle.js',
 		libraryTarget: process.env.NODE_ENV == 'development' ? undefined : 'commonjs2',
 	},
 	externals: process.env.NODE_ENV == 'development' ? undefined : {
