@@ -3,7 +3,7 @@ const webpack = require('webpack')
 module.exports = {
 	entry: './lib/index.jsx',
 	output: {
-		path: './dist',
+		path: `${__dirname}/dist`,
 		filename: 'bundle.js',
 		libraryTarget: process.env.NODE_ENV == 'development' ? undefined : 'commonjs2',
 	},
