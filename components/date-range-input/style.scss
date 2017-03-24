@@ -1,0 +1,29 @@
+.range ul {
+	white-space: nowrap;
+}
+
+.range li span:hover {
+	color: grey;
+}
+
+.date-range-input .input {
+	position: relative;
+}
+
+.date-range-input .input.opened {
+	z-index: 2000;
+}
+
+.date-range-input .range {
+	display: flex;
+}
+
+.date-range-input .overlay {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: transparent;
+	z-index:1000
+}
