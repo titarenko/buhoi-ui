@@ -1,0 +1,10 @@
+.select{
+	span, select {
+		box-sizing: border-box;
+		display: inline-block;
+		width: 100%;
+	}
+	select {
+		padding: 2px;
+	}
+}
