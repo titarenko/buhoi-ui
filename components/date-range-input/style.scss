@@ -6,11 +6,11 @@
 	color: grey;
 }
 
-.date-range-input {
+.date-range-input .input {
 	position: relative;
 }
 
-.date-range-input .input.editing {
+.date-range-input .input.opened {
 	z-index: 2000;
 }
 

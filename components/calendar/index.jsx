@@ -2,6 +2,7 @@ require('./style.scss')
 
 const moment = require('moment')
 const monthNames = moment.monthsShort()
+const { combineReducers } = require('buhoi-client')
 
 const weekDays = moment.weekdaysShort()
 const firstWeekday = moment.localeData()._week.dow
@@ -9,8 +10,8 @@ const dayNames = weekDays.map((name, index) => weekDays[(index + firstWeekday)%7
 
 module.exports = Calendar
 
-Calendar.reducer = valueReducer
-Calendar.actions = { setDate }
+Calendar.reducer = combineReducers({ value: valueReducer })
+Calendar.actions = { setValue }
 function Calendar (props){
 	const { value, onChange } = props
 
@@ -39,6 +40,13 @@ function Calendar (props){
 	const lastWeek = weeks[weeks.length - 1]
 	const dateNextMonth =  Math.max(...lastWeek) + 1
 	weeks[weeks.length - 1] =  lastWeek.map(it => it ? it : dateNextMonth)
+	const gridDays = weeks.map(days => <tr>{
+		days.map(day =>
+			<td onClick={() => selectDay(day)} className={getDayClass(day)}>
+				{  day && day < dateNextMonth ? day : ' '}
+			</td>
+		)
+	}</tr>)
 
 	function addMonth (count) {
 		onChange(moment(value).add(count, 'month'))
@@ -66,14 +74,7 @@ function Calendar (props){
 				<tr>{dayNames.map(name => <th>{name}</th>)}</tr>
 			</thead>
 			<tbody>
-				{	weeks.map(days => <tr>{
-							days.map(day =>
-								<td onClick={() => selectDay(day)} className={getDayClass(day)}>
-									{  day && day < dateNextMonth ? day : ' '}
-								</td>
-							)
-					}</tr>
-				)}
+				{ gridDays }
 			</tbody>
 		</table>
 	</div>
@@ -86,6 +87,6 @@ function valueReducer (state = null, action) {
 	}
 }
 
-function setDate (value) {
+function setValue (value) {
 	return { type: 'SET_CALENDAR_VALUE', value }
 }

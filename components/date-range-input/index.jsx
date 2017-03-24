@@ -8,12 +8,12 @@ const moment = require('moment')
 module.exports = DateRangeInput
 
 DateRangeInput.reducer = combineReducers({
-	editing: editingReducer,
+	mode: modeReducer,
 	dateRange: dateRangeReducer,
 })
 module.exports.actions = { setDateRangeValue }
 
-function DateRangeInput ({ editing, options, dateRange, onChange, dispatch }) {
+function DateRangeInput ({ mode, dateRange, onChange, options, dispatch }) {
 	if (!options) {
 		options = {
 			periods: defaultPeriods,
@@ -33,11 +33,8 @@ function DateRangeInput ({ editing, options, dateRange, onChange, dispatch }) {
 		return
 	}
 
-	const toggleEditing = () => dispatch({
-		type: `SET_DATE_RANGE_MODE_${!editing ? 'OPENED' : 'COLLAPSED'}`,
-		editing: !editing,
-	})
-	const dismiss = () => dispatch({ type: 'SET_DATE_RANGE_MODE_COLLAPSED', editing: false })
+	const toggleEditing = () => dispatch(setDateRangeMode(mode == 'opened' ? 'collapsed' : 'opened'))
+	const dismiss = () => dispatch(setDateRangeMode('collapsed'))
 
 	const changeBegin = d => {
 		const beginDate = d.startOf('day').toDate()
@@ -61,31 +58,32 @@ function DateRangeInput ({ editing, options, dateRange, onChange, dispatch }) {
 	const label = `${moment(dateRange[0]).format(dateFormat)} –
 		${moment(dateRange[1]).format(dateFormat)}`
 
+	const dateRangeInput = <div className="editor">
+		<div className="range">
+			<Calendar value={moment(dateRange[0])} onChange={changeBegin} />
+			<Calendar value={moment(dateRange[1])} onChange={changeEnd} />
+			<ul>
+				{periods.map(period =>
+					<li onClick={() => onChange(period.range)}>
+						<span>{period.name}</span>
+					</li>
+				)}
+			</ul>
+		</div>
+	</div>
+
 	return <div className="date-range-input">
-		{editing ? <div className="overlay" onClick={dismiss}></div> : null}
-		<div className={`input ${editing ? 'editing' : ''}`}>
+		{mode == 'opened' ? <div className="overlay" onClick={dismiss}></div> : null}
+		<div className={`input ${mode}`}>
 			<div className="caption" onClick={toggleEditing}>{label} &#8964;</div>
-			{editing ? <div className="editor">
-					<div className="range">
-						<Calendar value={moment(dateRange[0])} dispatch={dispatch} onChange={changeBegin} />
-						<Calendar value={moment(dateRange[1])} dispatch={dispatch} onChange={changeEnd} />
-						<ul>
-							{periods.map(period =>
-								<li onClick={() => onChange(period.range)}>
-									<span>{period.name}</span>
-								</li>
-							)}
-						</ul>
-					</div>
-				</div> : null}
+			{mode == 'opened' ? dateRangeInput : null}
 		</div>
 	</div>
 }
 
-function editingReducer (state = null, action) {
+function modeReducer (state = null, action) {
 	switch (action.type) {
-		case 'SET_DATE_RANGE_MODE_COLLAPSED':
-		case 'SET_DATE_RANGE_MODE_OPENED': return action.editing
+		case 'SET_DATE_RANGE_MODE': return action.mode
 		default: return state
 	}
 }
@@ -95,6 +93,10 @@ function dateRangeReducer (state = null, action) {
 		case 'SET_DATE_RANGE_VALUE': return action.value
 		default: return state
 	}
+}
+
+function setDateRangeMode (mode) {
+	return { type: 'SET_DATE_RANGE_MODE', mode }
 }
 
 function setDateRangeValue (value) {
