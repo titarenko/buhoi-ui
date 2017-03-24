@@ -1,4 +1,4 @@
-const { navigateTo } = require('buhoi-client')
+const { actions: { navigateTo } } = require('buhoi-client')
 const Same = require('../same')
 
 require('./style.scss')
