@@ -42,7 +42,7 @@ if (process.env.NODE_ENV == 'development') {
 	}]
 	const optionsDateRangeInput = {
 		periods,
-		dateFormat: moment().format('L'),
+		dateFormat: 'YYYY.MMM.DD',
 	}
 
 	const reducers = combineReducers({

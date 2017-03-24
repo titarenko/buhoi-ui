@@ -59,5 +59,5 @@ module.exports = {
 			],
 		},
 	],
-	defaultFormat: moment().format(),
+	defaultFormat: moment.localeData().longDateFormat('L'),
 }
