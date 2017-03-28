@@ -41,7 +41,11 @@ if (process.env.NODE_ENV == 'development') {
 
 	function AllComponents ({ textInput, dispatch }) { // eslint-disable-line no-inner-declarations
 		return <div>
-			<TextInput {...textInput} label="text input 1" onChange={v => dispatch(TextInput.actions.setValue(v))} />
+			<TextInput
+				{...textInput}
+				label="text input 1"
+				lines="auto"
+				onChange={v => dispatch(TextInput.actions.setValue(v))} />
 		</div>
 	}
 }
