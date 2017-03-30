@@ -10,8 +10,6 @@ module.exports = {
 	externals: process.env.NODE_ENV == 'development' ? undefined : {
 		'inferno': { commonjs2: 'inferno' },
 		'buhoi-client': { commonjs2: 'buhoi-client' },
-		'lodash.get': { commonjs2: 'lodash.get' },
-		'lodash.set': { commonjs2: 'lodash.set' },
 	},
 	module: {
 		rules: [

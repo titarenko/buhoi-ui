@@ -29,14 +29,12 @@
     "inferno": "^1.4.2",
     "json-server": "^0.9.6",
     "lint-staged": "^3.4.0",
-    "lodash.get": "^4.4.2",
-    "lodash.set": "^4.3.2",
     "node-sass": "^4.5.0",
+    "npm-check": "^5.4.0",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.0",
     "sass-loader": "^6.0.0",
     "style-loader": "^0.13.1",
-    "url-parse": "^1.1.7",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.2"
   },
@@ -47,7 +45,9 @@
     "lint": "eslint . --ext .js,.jsx",
     "precommit": "lint-staged",
     "prepush": "npm run lint",
-    "release": "npm run lint && npm run build && npm version patch && npm publish && git push && git push --tags"
+    "release": "npm run lint && npm run build && npm version patch && npm publish && git push && git push --tags",
+    "check": "npm-check --ignore eslint-config-plugin:react --ignore css-loader --ignore node-sass --ignore sass-loader --ignore style-loader --ignore husky --ignore webpack-dev-server --ignore json-server",
+    "update": "npm-check --ignore eslint-config-plugin:react --ignore css-loader --ignore node-sass --ignore sass-loader --ignore style-loader --ignore husky --ignore webpack-dev-server --ignore json-server -u"
   },
   "lint-staged": {
     "*.js": "eslint",
