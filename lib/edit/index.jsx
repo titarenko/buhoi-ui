@@ -43,10 +43,10 @@ function Edit (props) {
 
 	return <form onSubmit={handleSubmit}>
 		{Form(props)}
-		<input type="submit" value="сохранить" />
-		{id != null && removable ? <button onClick={handleRemove}>удалить</button> : null}
-		{id != null && restorable ? <button onClick={handleRestore}>восстановить</button> : null}
-		<button onClick={handleFinish}>отмена</button>
+		<input type="submit" value="save" />
+		{id != null && removable ? <button onClick={handleRemove}>remove</button> : null}
+		{id != null && restorable ? <button onClick={handleRestore}>restore</button> : null}
+		<button onClick={handleFinish}>cancel</button>
 	</form>
 
 	function handleSubmit (e) {
@@ -56,14 +56,14 @@ function Edit (props) {
 
 	function handleRemove (e) {
 		e.preventDefault()
-		if (confirm('Подтвердите удаление.')) {
+		if (confirm('Do you want to remove this item?')) {
 			dispatch(removeItem(resource, id))
 		}
 	}
 
 	function handleRestore (e) {
 		e.preventDefault()
-		if (confirm('Подтвердите восстановление')) {
+		if (confirm('Do you want to restore this item?')) {
 			dispatch(restoreItem(resource, id))
 		}
 	}
