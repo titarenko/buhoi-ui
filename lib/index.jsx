@@ -8,6 +8,7 @@ const Menu = require('./menu')
 const Same = require('./same')
 const TextInput = require('./text-input')
 const Select = require('./select')
+const DateRangeInput = require('./date-range-input')
 
 const components = {
 	Calendar,
@@ -18,6 +19,7 @@ const components = {
 	Same,
 	TextInput,
 	Select,
+	DateRangeInput,
 }
 
 module.exports = components
@@ -26,11 +28,13 @@ if (process.env.NODE_ENV == 'development') {
 	const { createStore, combineReducers, applyMiddleware } = require('redux')
 	const logger = require('redux-logger')
 	const thunk = require('redux-thunk')
+	const moment = require('moment')
 
 	const reducer = combineReducers({
 		textInput: TextInput.reducer,
 		calendar: Calendar.reducer,
 		select: Select.reducer,
+		dateRangeInput: DateRangeInput.reducer,
 	})
 
 	const store = createStore(reducer, applyMiddleware(logger.default, thunk.default))
@@ -44,13 +48,24 @@ if (process.env.NODE_ENV == 'development') {
 		Inferno.render(dom, node)
 	}
 
+	store.dispatch(Calendar.actions.setValue(new Date()))
 	store.dispatch(TextInput.actions.setValue('hi'))
+	store.dispatch(DateRangeInput.actions.setValue([
+		moment().startOf('day').toDate(),
+		moment().endOf('day').toDate(),
+	]))
 
 	if (module.hot) {
 		module.hot.accept(() => store.dispatch({ type: 'HOT_RELOAD' }))
 	}
 
-	function AllComponents ({ textInput, calendar, select, dispatch }) { // eslint-disable-line no-inner-declarations
+	function AllComponents ({ // eslint-disable-line no-inner-declarations
+		textInput,
+		calendar,
+		select,
+		dateRangeInput,
+		dispatch,
+	}) {
 		return <div>
 			<TextInput
 				{...textInput}
@@ -68,6 +83,10 @@ if (process.env.NODE_ENV == 'development') {
 				resource="/api/countries"
 				onChange={v => dispatch(Select.actions.setValue(v))}
 				dispatch={dispatch} />
+			<DateRangeInput
+				{...dateRangeInput}
+				label="period"
+				onChange={v => dispatch(DateRangeInput.actions.setValue(v))} />
 		</div>
 	}
 }

@@ -24,9 +24,9 @@ function Calendar (props) {
 		: moment(props.value).endOf('day')
 
 	return <div className="calendar">
-		<div>
+		<div className="header">
 			{getMonthChangeButton({ value, months: -1, handleChange })}
-			<span> {value.format('MMM YYYY')} </span>
+			<div> {value.format('MMM YYYY')} </div>
 			{getMonthChangeButton({ value, months: 1, handleChange })}
 		</div>
 		<table>
@@ -68,11 +68,11 @@ function getWeeks (value) {
 function getMonthChangeButton ({ value, months, handleChange }) {
 	const nextValue = moment(value).add({ months })
 	return months > 0
-		? <button onClick={() => handleChange(nextValue)}>&rarr; {nextValue.format('MMM')}</button>
-		: <button onClick={() => handleChange(nextValue)}>{nextValue.format('MMM')} &larr;</button>
+		? <div onClick={() => handleChange(nextValue)}>&rarr; {nextValue.format('MMM')}</div>
+		: <div onClick={() => handleChange(nextValue)}>{nextValue.format('MMM')} &larr;</div>
 }
 
-function valueReducer (state = new Date(), action) {
+function valueReducer (state = null, action) {
 	switch (action.type) {
 		case 'CALENDAR_SET_VALUE': return action.value
 		default: return state

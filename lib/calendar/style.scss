@@ -1,19 +1,21 @@
 .calendar {
 	text-align: center;
 	width: 210px;
-	.selected, .selectable:hover {
+	.selected, .selectable:hover, .header div:first-child:hover, .header div:last-child:hover {
 		background: black;
 		color: white;
 		cursor: pointer;
 	}
-	button:first-child {
-		float: left;
-	}
-	span {
+	.header {
 		font-weight: bold;
-	}
-	button:last-child {
-		float: right;
+		display: flex;
+		div:first-child, div:last-child {
+			flex-grow: 1;
+			cursor: pointer;
+		}
+		div:nth-child(2) {
+			margin: 0 5px;
+		}
 	}
 	table {
 		table-layout: fixed;
