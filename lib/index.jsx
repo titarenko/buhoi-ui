@@ -1,6 +1,7 @@
 require('./generic.scss')
 
-const Calendar = require('./calendar')
+const DateInput = require('./date-input')
+const DateRangeInput = require('./date-range-input')
 const List = require('./list')
 const Edit = require('./edit')
 const Multiselect = require('./multiselect')
@@ -8,10 +9,10 @@ const Menu = require('./menu')
 const Same = require('./same')
 const TextInput = require('./text-input')
 const Select = require('./select')
-const DateRangeInput = require('./date-range-input')
 
 const components = {
-	Calendar,
+	DateInput,
+	DateRangeInput,
 	List,
 	Edit,
 	Multiselect,
@@ -19,7 +20,6 @@ const components = {
 	Same,
 	TextInput,
 	Select,
-	DateRangeInput,
 }
 
 module.exports = components
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV == 'development') {
 
 	const reducer = combineReducers({
 		textInput: TextInput.reducer,
-		calendar: Calendar.reducer,
+		dateInput: DateInput.reducer,
 		select: Select.reducer,
 		dateRangeInput: DateRangeInput.reducer,
 	})
@@ -48,7 +48,7 @@ if (process.env.NODE_ENV == 'development') {
 		Inferno.render(dom, node)
 	}
 
-	store.dispatch(Calendar.actions.setValue(new Date()))
+	store.dispatch(DateInput.actions.setValue(new Date()))
 	store.dispatch(TextInput.actions.setValue('hi'))
 	store.dispatch(DateRangeInput.actions.setValue([
 		moment().startOf('day').toDate(),
@@ -61,7 +61,7 @@ if (process.env.NODE_ENV == 'development') {
 
 	function AllComponents ({ // eslint-disable-line no-inner-declarations
 		textInput,
-		calendar,
+		dateInput,
 		select,
 		dateRangeInput,
 		dispatch,
@@ -72,10 +72,10 @@ if (process.env.NODE_ENV == 'development') {
 				label="text input 1"
 				lines="auto"
 				onChange={v => dispatch(TextInput.actions.setValue(v))} />
-			<Calendar
-				{...calendar}
+			<DateInput
+				{...dateInput}
 				policy="end"
-				onChange={v => dispatch(Calendar.actions.setValue(v))} />
+				onChange={v => dispatch(DateInput.actions.setValue(v))} />
 			<Select
 				{...select}
 				label="select"

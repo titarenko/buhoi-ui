@@ -1,7 +1,7 @@
 const { combineReducers } = require('redux')
 const moment = require('moment')
 
-const Calendar = require('../calendar')
+const DateInput = require('../date-input')
 const Same = require('../same')
 
 require('./style.scss')
@@ -19,8 +19,8 @@ function DateRangeInput ({ label, value, onChange }) {
 	return <div className="date-range-input">
 		<div>{label}</div>
 		<div className="range">
-			<Calendar value={value[0]} mode="start" onChange={changeStart} />
-			<Calendar value={value[1]} mode="end" onChange={changeEnd} />
+			<DateInput value={value[0]} mode="start" onChange={changeStart} />
+			<DateInput value={value[1]} mode="end" onChange={changeEnd} />
 			<ul>{shortcuts.map(s => <li onClick={() => onChange(s.range)}>{s.name}</li>)}</ul>
 		</div>
 	</div>
