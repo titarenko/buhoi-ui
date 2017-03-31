@@ -14,12 +14,12 @@ module.exports.reducer = combineReducers({ value: valueReducer })
 module.exports.actions = { setValue }
 
 function Calendar (props) {
-	const { onChange, policy = 'start' } = props
+	const { onChange, mode = 'start' } = props
 	if (!props.value) {
 		return <Same />
 	}
 
-	const value = policy == 'start'
+	const value = mode == 'start'
 		? moment(props.value).startOf('day')
 		: moment(props.value).endOf('day')
 
