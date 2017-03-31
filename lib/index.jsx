@@ -1,5 +1,6 @@
 require('./generic.scss')
 
+const Calendar = require('./calendar')
 const List = require('./list')
 const Edit = require('./edit')
 const Multiselect = require('./multiselect')
@@ -8,6 +9,7 @@ const Same = require('./same')
 const TextInput = require('./text-input')
 
 const components = {
+	Calendar,
 	List,
 	Edit,
 	Multiselect,
@@ -22,7 +24,10 @@ if (process.env.NODE_ENV == 'development') {
 	const { createStore, combineReducers, applyMiddleware } = require('redux')
 	const logger = require('redux-logger')
 
-	const reducer = combineReducers({ textInput: TextInput.reducer })
+	const reducer = combineReducers({
+		textInput: TextInput.reducer,
+		calendar: Calendar.reducer,
+	})
 
 	const store = createStore(reducer, applyMiddleware(logger.default))
 
@@ -39,13 +44,17 @@ if (process.env.NODE_ENV == 'development') {
 		module.hot.accept(() => store.dispatch({ type: 'HOT_RELOAD' }))
 	}
 
-	function AllComponents ({ textInput, dispatch }) { // eslint-disable-line no-inner-declarations
+	function AllComponents ({ textInput, calendar, dispatch }) { // eslint-disable-line no-inner-declarations
 		return <div>
 			<TextInput
 				{...textInput}
 				label="text input 1"
 				lines="auto"
 				onChange={v => dispatch(TextInput.actions.setValue(v))} />
+			<Calendar
+				{...calendar}
+				policy="end"
+				onChange={v => dispatch(Calendar.actions.setValue(v))} />
 		</div>
 	}
 }

@@ -1,0 +1,28 @@
+.calendar {
+	text-align: center;
+	width: 210px;
+	.selected, .selectable:hover {
+		background: black;
+		color: white;
+		cursor: pointer;
+	}
+	button:first-child {
+		float: left;
+	}
+	span {
+		font-weight: bold;
+	}
+	button:last-child {
+		float: right;
+	}
+	table {
+		table-layout: fixed;
+	}
+	th, td {
+		padding: 2px 0;
+		width: 30px;
+	}
+	td {
+		text-align: center;
+	}
+}

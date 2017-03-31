@@ -9,6 +9,7 @@ module.exports = {
 	},
 	externals: process.env.NODE_ENV == 'development' ? undefined : {
 		'inferno': { commonjs2: 'inferno' },
+		'moment': { commonjs2: 'moment' },
 		'buhoi-client': { commonjs2: 'buhoi-client' },
 	},
 	module: {
