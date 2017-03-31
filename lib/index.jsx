@@ -7,6 +7,7 @@ const Multiselect = require('./multiselect')
 const Menu = require('./menu')
 const Same = require('./same')
 const TextInput = require('./text-input')
+const Select = require('./select')
 
 const components = {
 	Calendar,
@@ -16,6 +17,7 @@ const components = {
 	Menu,
 	Same,
 	TextInput,
+	Select,
 }
 
 module.exports = components
@@ -23,20 +25,24 @@ module.exports = components
 if (process.env.NODE_ENV == 'development') {
 	const { createStore, combineReducers, applyMiddleware } = require('redux')
 	const logger = require('redux-logger')
+	const thunk = require('redux-thunk')
 
 	const reducer = combineReducers({
 		textInput: TextInput.reducer,
 		calendar: Calendar.reducer,
+		select: Select.reducer,
 	})
 
-	const store = createStore(reducer, applyMiddleware(logger.default))
+	const store = createStore(reducer, applyMiddleware(logger.default, thunk.default))
 
-	store.subscribe(() => {
+	store.subscribe(() => setTimeout(render, 0))
+
+	function render () { // eslint-disable-line no-inner-declarations
 		const props = { ...store.getState(), dispatch: store.dispatch }
 		const dom = AllComponents(props)
 		const node = document.getElementById('root')
 		Inferno.render(dom, node)
-	})
+	}
 
 	store.dispatch(TextInput.actions.setValue('hi'))
 
@@ -44,7 +50,7 @@ if (process.env.NODE_ENV == 'development') {
 		module.hot.accept(() => store.dispatch({ type: 'HOT_RELOAD' }))
 	}
 
-	function AllComponents ({ textInput, calendar, dispatch }) { // eslint-disable-line no-inner-declarations
+	function AllComponents ({ textInput, calendar, select, dispatch }) { // eslint-disable-line no-inner-declarations
 		return <div>
 			<TextInput
 				{...textInput}
@@ -55,6 +61,12 @@ if (process.env.NODE_ENV == 'development') {
 				{...calendar}
 				policy="end"
 				onChange={v => dispatch(Calendar.actions.setValue(v))} />
+			<Select
+				{...select}
+				label="select"
+				resource="/api/countries"
+				onChange={v => dispatch(Select.actions.setValue(v))}
+				dispatch={dispatch} />
 		</div>
 	}
 }
