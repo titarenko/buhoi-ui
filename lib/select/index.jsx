@@ -14,7 +14,7 @@ module.exports.reducer = combineReducers({
 })
 
 function Select (props) {
-	const { value, request, items, dispatch, onChange, label, resource, query } = props
+	const { value, request, items, dispatch, onChange, label, resource, query, optional } = props
 
 	const isNotLoaded = !items && resource && !request
 	if (isNotLoaded) {
@@ -27,16 +27,23 @@ function Select (props) {
 		return <Same />
 	}
 
+	const options = optional
+		? [{ id: null, name: 'any' }].concat(items)
+		: items
+
 	return <div className="select">
-		<span>{label}</span>
-		<select onChange={handleChange}>{items.map(it =>
+		{label ? <span>{label}</span> : undefined}
+		<select onChange={handleChange}>{options.map(it =>
 			<option value={it.id} selected={value && value.id == it.id }>{it.name}</option>
 		)}</select>
 	</div>
 
 	function handleChange (ev) {
 		const id = ev.target.value
-		onChange(items.find(it => it.id == id))
+		onChange(id == 'null' && optional
+			? options[0]
+			: options.find(it => it.id == id)
+		)
 	}
 }
 

@@ -64,6 +64,7 @@ if (process.env.NODE_ENV == 'development') {
 			<Select
 				{...select}
 				label="select"
+				optional
 				resource="/api/countries"
 				onChange={v => dispatch(Select.actions.setValue(v))}
 				dispatch={dispatch} />
