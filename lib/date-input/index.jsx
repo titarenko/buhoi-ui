@@ -74,11 +74,11 @@ function getMonthChangeButton ({ value, months, handleChange }) {
 
 function valueReducer (state = null, action) {
 	switch (action.type) {
-		case 'CALENDAR_SET_VALUE': return action.value
+		case 'DATE_INPUT_SET_VALUE': return action.value
 		default: return state
 	}
 }
 
 function setValue (value) {
-	return { type: 'CALENDAR_SET_VALUE', value }
+	return { type: 'DATE_INPUT_SET_VALUE', value }
 }
