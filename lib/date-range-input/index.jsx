@@ -17,7 +17,7 @@ function DateRangeInput ({ label, value, onChange }) {
 	}
 
 	return <div className="date-range-input">
-		<div>{label}</div>
+		{label ? <div>{label}</div> : null}
 		<div className="range">
 			<DateInput value={value[0]} mode="start" onChange={changeStart} />
 			<DateInput value={value[1]} mode="end" onChange={changeEnd} />

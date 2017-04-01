@@ -9,12 +9,12 @@ const dayNames = weekDays.map((name, index) => weekDays[(index + firstWeekday)%7
 
 const Same = require('../same')
 
-module.exports = Calendar
+module.exports = DateInput
 module.exports.reducer = combineReducers({ value: valueReducer })
 module.exports.actions = { setValue }
 
-function Calendar (props) {
-	const { onChange, mode = 'start' } = props
+function DateInput (props) {
+	const { label, onChange, mode = 'start' } = props
 	if (!props.value) {
 		return <Same />
 	}
@@ -23,7 +23,8 @@ function Calendar (props) {
 		? moment(props.value).startOf('day')
 		: moment(props.value).endOf('day')
 
-	return <div className="calendar">
+	return <div className="date-input">
+		{label ? <div>{label}</div> : null}
 		<div className="header">
 			{getMonthChangeButton({ value, months: -1, handleChange })}
 			<div> {value.format('MMM YYYY')} </div>

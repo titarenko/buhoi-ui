@@ -1,5 +1,4 @@
-.calendar {
-	text-align: center;
+.date-input {
 	width: 210px;
 	.selected, .selectable:hover, .header div:first-child:hover, .header div:last-child:hover {
 		background: black;
@@ -9,6 +8,7 @@
 	.header {
 		font-weight: bold;
 		display: flex;
+		text-align: center;
 		div:first-child, div:last-child {
 			flex-grow: 1;
 			cursor: pointer;

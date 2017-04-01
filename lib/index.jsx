@@ -74,25 +74,27 @@ if (process.env.NODE_ENV == 'development') {
 				label="collection"
 				resource="/api/countries"
 				onChange={v => dispatch(CollectionInput.actions.setValue(v))}
-				dispatch={dispatch} />
+				dispatch={dispatch}
+				searchToQs={(search, value_) => ({ q: search })} />
 			<DateInput
 				{...dateInput}
+				label="date"
 				policy="end"
 				onChange={v => dispatch(DateInput.actions.setValue(v))} />
 			<DateRangeInput
 				{...dateRangeInput}
-				label="period"
+				label="date range"
 				onChange={v => dispatch(DateRangeInput.actions.setValue(v))} />
 			<ItemInput
 				{...itemInput}
-				label="select"
+				label="item"
 				optional
 				resource="/api/countries"
 				onChange={v => dispatch(ItemInput.actions.setValue(v))}
 				dispatch={dispatch} />
 			<TextInput
 				{...textInput}
-				label="text input 1"
+				label="text"
 				lines="auto"
 				onChange={v => dispatch(TextInput.actions.setValue(v))} />
 		</div>
