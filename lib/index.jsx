@@ -1,25 +1,25 @@
 require('./generic.scss')
 
+const CollectionInput = require('./collection-input')
 const DateInput = require('./date-input')
 const DateRangeInput = require('./date-range-input')
-const List = require('./list')
 const Edit = require('./edit')
-const Multiselect = require('./multiselect')
+const ItemInput = require('./item-input')
+const List = require('./list')
 const Menu = require('./menu')
 const Same = require('./same')
 const TextInput = require('./text-input')
-const Select = require('./select')
 
 const components = {
+	CollectionInput,
 	DateInput,
 	DateRangeInput,
-	List,
 	Edit,
-	Multiselect,
+	ItemInput,
+	List,
 	Menu,
 	Same,
 	TextInput,
-	Select,
 }
 
 module.exports = components
@@ -31,13 +31,14 @@ if (process.env.NODE_ENV == 'development') {
 	const moment = require('moment')
 
 	const reducer = combineReducers({
-		textInput: TextInput.reducer,
+		collectionInput: CollectionInput.reducer,
 		dateInput: DateInput.reducer,
-		select: Select.reducer,
 		dateRangeInput: DateRangeInput.reducer,
+		itemInput: ItemInput.reducer,
+		textInput: TextInput.reducer,
 	})
 
-	const store = createStore(reducer, applyMiddleware(logger.default, thunk.default))
+	const store = createStore(reducer, applyMiddleware(thunk.default, logger.default))
 
 	store.subscribe(() => setTimeout(render, 0))
 
@@ -60,33 +61,40 @@ if (process.env.NODE_ENV == 'development') {
 	}
 
 	function AllComponents ({ // eslint-disable-line no-inner-declarations
-		textInput,
+		collectionInput,
 		dateInput,
-		select,
 		dateRangeInput,
+		itemInput,
+		textInput,
 		dispatch,
 	}) {
 		return <div>
+			<CollectionInput
+				{...collectionInput}
+				label="collection"
+				resource="/api/countries"
+				onChange={v => dispatch(CollectionInput.actions.setValue(v))}
+				dispatch={dispatch} />
+			<DateInput
+				{...dateInput}
+				policy="end"
+				onChange={v => dispatch(DateInput.actions.setValue(v))} />
+			<DateRangeInput
+				{...dateRangeInput}
+				label="period"
+				onChange={v => dispatch(DateRangeInput.actions.setValue(v))} />
+			<ItemInput
+				{...itemInput}
+				label="select"
+				optional
+				resource="/api/countries"
+				onChange={v => dispatch(ItemInput.actions.setValue(v))}
+				dispatch={dispatch} />
 			<TextInput
 				{...textInput}
 				label="text input 1"
 				lines="auto"
 				onChange={v => dispatch(TextInput.actions.setValue(v))} />
-			<DateInput
-				{...dateInput}
-				policy="end"
-				onChange={v => dispatch(DateInput.actions.setValue(v))} />
-			<Select
-				{...select}
-				label="select"
-				optional
-				resource="/api/countries"
-				onChange={v => dispatch(Select.actions.setValue(v))}
-				dispatch={dispatch} />
-			<DateRangeInput
-				{...dateRangeInput}
-				label="period"
-				onChange={v => dispatch(DateRangeInput.actions.setValue(v))} />
 		</div>
 	}
 }
