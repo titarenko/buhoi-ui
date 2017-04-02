@@ -17,7 +17,7 @@ function CollectionInput (props) {
 	const { suggestedItems, selectedSuggestionIndex } = props
 
 	return <div className="collection-input">
-		{label ? <div>{label}</div> : null}
+		{label ? <div className="label">{label}</div> : null}
 		<div className="input">
 			{value.map(it => <span onClick={() => remove(it)}>{it.name} &#10005;</span>)}
 			<input

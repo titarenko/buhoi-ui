@@ -24,7 +24,7 @@ function DateInput (props) {
 		: moment(props.value).endOf('day')
 
 	return <div className="date-input">
-		{label ? <div>{label}</div> : null}
+		{label ? <div className="label">{label}</div> : null}
 		<div className="header">
 			{getMonthChangeButton({ value, months: -1, handleChange })}
 			<div> {value.format('MMM YYYY')} </div>

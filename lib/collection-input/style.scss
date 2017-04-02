@@ -1,6 +1,8 @@
 .collection-input {
 	$spacing: 4px;
-	margin-bottom: $spacing;
+	.label {
+		margin-bottom: 2px;
+	}
 	.input {
 		width: 100%;
 		box-sizing: border-box;

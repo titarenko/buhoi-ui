@@ -1,5 +1,8 @@
 .date-input {
 	width: 210px;
+	.label {
+		margin-bottom: 2px;
+	}
 	.selected, .selectable:hover, .header div:first-child:hover, .header div:last-child:hover {
 		background: black;
 		color: white;

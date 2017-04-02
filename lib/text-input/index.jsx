@@ -9,14 +9,14 @@ require('./style.scss')
 function TextInput ({ label, lines, minLines = 5, value, error, sensitive, onChange, preventAutocomplete }) {
 	return lines == null
 		? <label>
-			<span>{label}</span>
+			<div className="label">{label}</div>
 			{preventAutocomplete ? <input type="text" style="display:none;" /> : null}
 			{preventAutocomplete ? <input type="password" style="display:none;" /> : null}
 			<input type={sensitive ? 'password' : 'text'} defaultValue={value} onChange={handleChange} />
 			{error ? <span className="validation-error">{error}</span> : null}
 		</label>
 		: <label>
-			<span>{label}</span>
+			<div className="label">{label}</div>
 			<textarea defaultValue={value} onChange={handleChange} rows={computeRowsCount()}></textarea>
 			{error ? <span className="validation-error">{error}</span> : null}
 		</label>

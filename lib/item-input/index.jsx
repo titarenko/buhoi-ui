@@ -32,7 +32,7 @@ function ItemInput (props) {
 		: items
 
 	return <div className="item-input">
-		{label ? <span>{label}</span> : undefined}
+		{label ? <div className="label">{label}</div> : undefined}
 		<select onChange={handleChange}>{options.map(it =>
 			<option value={it.id} selected={value && value.id == it.id }>{it.name}</option>
 		)}</select>

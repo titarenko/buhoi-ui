@@ -1,8 +1,10 @@
 .item-input {
-	span, select {
-		width: 100%;
+	width: 100%;
+	.label {
+		margin-bottom: 2px;
 	}
 	select {
+		width: inherit;
 		padding: 2px;
 	}
 }
