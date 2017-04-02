@@ -57,11 +57,13 @@ function CollectionInput (props) {
 	function add (item) {
 		if (value.every(it => it.id != item.id)) {
 			onChange([...value, item])
+			suggest(search)
 		}
 	}
 
 	function remove (item) {
 		onChange(value.filter(it => it.id != item.id))
+		suggest(search)
 	}
 
 	function suggest (search) {
