@@ -51,10 +51,10 @@ if (process.env.NODE_ENV == 'development') {
 
 	store.dispatch(DateInput.actions.setValue(new Date()))
 	store.dispatch(TextInput.actions.setValue('hi'))
-	store.dispatch(DateRangeInput.actions.setValue([
+	store.dispatch(DateRangeInput.actions.setValue(JSON.parse(JSON.stringify([
 		moment().startOf('day').toDate(),
 		moment().endOf('day').toDate(),
-	]))
+	]))))
 
 	if (module.hot) {
 		module.hot.accept(() => store.dispatch({ type: 'HOT_RELOAD' }))

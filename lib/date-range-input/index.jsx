@@ -11,10 +11,13 @@ module.exports = DateRangeInput
 module.exports.reducer = combineReducers({ value: valueReducer })
 module.exports.actions = { setValue }
 
-function DateRangeInput ({ label, value, onChange }) {
-	if (!value) {
+function DateRangeInput (props) {
+	if (!props.value) {
 		return <Same />
 	}
+
+	const { label, onChange } = props
+	const value = props.value.map(it => moment(it))
 
 	return <div className="date-range-input">
 		{label ? <div className="label">{label}</div> : null}
@@ -26,15 +29,17 @@ function DateRangeInput ({ label, value, onChange }) {
 	</div>
 
 	function changeStart (d) {
-		onChange(d <= value[1]
-			? [d, value[1]]
+		const end = value[1].toDate()
+		onChange(d <= end
+			? [d, end]
 			: [d, moment(d).endOf('day').toDate()]
 		)
 	}
 
 	function changeEnd (d) {
-		onChange(value[0] <= d
-			? [value[0], d]
+		const start = value[0].toDate()
+		onChange(start <= d
+			? [start, d]
 			: [moment(d).startOf('day').toDate(), d]
 		)
 	}
