@@ -1,6 +1,6 @@
 {
   "name": "buhoi-ui",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "UI components for buhoi framework.",
   "main": "./dist/bundle.js",
   "repository": {
