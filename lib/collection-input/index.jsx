@@ -13,7 +13,7 @@ module.exports.reducer = combineReducers({
 module.exports.actions = { setValue }
 
 function CollectionInput (props) {
-	const { value, search, onChange, dispatch, resource, searchToQs, label } = props
+	const { value, search, onChange, dispatch, resource, label } = props
 	const { suggestedItems, selectedSuggestionIndex } = props
 
 	return <div className="collection-input">
@@ -24,9 +24,9 @@ function CollectionInput (props) {
 				type="text"
 				value={search}
 				onKeyDown={handleKeypress}
-				onInput={ev => dispatch(suggest(ev.target.value))}
-				onBlur={() => dispatch(finishSuggestion())}
-				onFocus={() => dispatch(suggest(search))}
+				onInput={ev => suggest(ev.target.value)}
+				onBlur={finish}
+				onFocus={() => suggest(search)}
 			/>
 		</div>
 		{suggestedItems ? <div className="suggestion">
@@ -65,14 +65,21 @@ function CollectionInput (props) {
 	}
 
 	function suggest (search) {
-		return dispatch => {
-			dispatch(setSearch(search))
-			dispatch(read(
-				'COLLECTION_INPUT_SUGGESTION',
-				resource,
-				searchToQs ? searchToQs(search, value) : undefined
-			))
-		}
+		const criterias = [
+			['name ilike', search ? `%${search}%` : undefined],
+			['not', value ? { 'id in': value.map(it => it.id) } : undefined],
+		].filter(it => it[1])
+
+		const q = criterias.length > 0
+			? JSON.stringify(criterias.reduce((r, c) => Object.assign(r, { [c[0]]: c[1] }), { }))
+			: undefined
+
+		dispatch(setSearch(search))
+		dispatch(read('COLLECTION_INPUT_SUGGESTION', resource, q ? { q } : undefined))
+	}
+
+	function finish () {
+		dispatch(finishSuggestion())
 	}
 }
 
