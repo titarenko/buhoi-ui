@@ -20,8 +20,8 @@ module.exports = {
 				use: {
 					loader: 'babel-loader',
 					options: {
-						plugins: ['syntax-jsx', 'inferno'],
-						presets: ['stage-0', 'es2015'],
+						plugins: ['transform-runtime', 'syntax-jsx', 'inferno'],
+						presets: ['stage-0', 'es2015', 'es2017'],
 					},
 				},
 			},
