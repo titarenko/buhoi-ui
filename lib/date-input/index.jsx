@@ -3,74 +3,30 @@ const moment = require('moment')
 
 require('./style.scss')
 
-const weekDays = moment.weekdaysMin()
-const firstWeekday = moment.localeData()._week.dow
-const dayNames = weekDays.map((name, index) => weekDays[(index + firstWeekday)%7])
-
+const Outside = require('../outside')
+const Calendar = require('../calendar')
 const Same = require('../same')
 
 module.exports = DateInput
-module.exports.reducer = combineReducers({ value: valueReducer })
+module.exports.reducer = combineReducers({
+	value: valueReducer,
+	opened: openedReducer,
+})
 module.exports.actions = { setValue }
 
 function DateInput (props) {
-	const { label, onChange, mode = 'start' } = props
-	if (!props.value) {
+	const { label, value, onChange, mode, opened, dispatch } = props
+	if (!value) {
 		return <Same />
 	}
 
-	const value = mode == 'start'
-		? moment(props.value).startOf('day')
-		: moment(props.value).endOf('day')
-
 	return <div className="date-input">
-		{label ? <div className="label">{label}</div> : null}
-		<div className="header">
-			{getMonthChangeButton({ value, months: -1, handleChange })}
-			<div> {value.format('MMM YYYY')} </div>
-			{getMonthChangeButton({ value, months: 1, handleChange })}
-		</div>
-		<table>
-			<thead>
-				<tr>{dayNames.map(name => <th>{name}</th>)}</tr>
-			</thead>
-			<tbody>{getWeeks(value).map(days =>
-				<tr>{days.map(day => day
-					? <td
-						onClick={() => handleChange(day)}
-						className={value.date() == day.date() ? 'selected' : 'selectable'}
-					>{day.format('D')}</td>
-					: <td></td>
-				)}
-				</tr>
-			)}</tbody>
-		</table>
+		<Outside onClick={() => dispatch(toggleCalendar(false))}>
+			{label ? <div className="label">{label}</div> : null}
+			<p onClick={() => dispatch(toggleCalendar())}>{moment(value).format('L')}</p>
+			{opened ? <Calendar value={value} mode={mode} onChange={onChange} /> : null}
+		</Outside>
 	</div>
-
-	function handleChange (nextValue) {
-		onChange(nextValue.toDate())
-	}
-}
-
-function getWeeks (value) {
-	const weeks = []
-	const currentDate = moment(value).date(1)
-	while (currentDate.month() == value.month()) {
-		const currentWeek = [null, null, null, null, null, null, null]
-		do {
-			currentWeek[currentDate.weekday()] = moment(currentDate)
-			currentDate.add({ days: 1 })
-		} while (currentDate.month() == value.month() && currentDate.weekday())
-		weeks.push(currentWeek)
-	}
-	return weeks
-}
-
-function getMonthChangeButton ({ value, months, handleChange }) {
-	const nextValue = moment(value).add({ months })
-	return months > 0
-		? <div onClick={() => handleChange(nextValue)}>&rarr; {nextValue.format('MMM')}</div>
-		: <div onClick={() => handleChange(nextValue)}>{nextValue.format('MMM')} &larr;</div>
 }
 
 function valueReducer (state = null, action) {
@@ -78,6 +34,17 @@ function valueReducer (state = null, action) {
 		case 'DATE_INPUT_SET_VALUE': return action.value
 		default: return state
 	}
+}
+
+function openedReducer (state = false, action) {
+	switch (action.type) {
+		case 'DATE_INPUT_TOGGLE_CALENDAR': return action.value !== undefined ? action.value : !state
+		default: return state
+	}
+}
+
+function toggleCalendar (value) {
+	return { type: 'DATE_INPUT_TOGGLE_CALENDAR', value }
 }
 
 function setValue (value) {

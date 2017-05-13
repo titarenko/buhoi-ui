@@ -1,0 +1,29 @@
+.calendar {
+	.selected, .selectable:hover, .header div:first-child:hover, .header div:last-child:hover {
+		background: black;
+		color: white;
+		cursor: pointer;
+	}
+	.header {
+		font-weight: bold;
+		display: flex;
+		text-align: center;
+		div:first-child, div:last-child {
+			flex-grow: 1;
+			cursor: pointer;
+		}
+		div:nth-child(2) {
+			margin: 0 5px;
+		}
+	}
+	table {
+		table-layout: fixed;
+	}
+	th, td {
+		padding: 2px 0;
+		width: 30px;
+	}
+	td {
+		text-align: center;
+	}
+}

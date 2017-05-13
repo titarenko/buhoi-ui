@@ -80,11 +80,13 @@ if (process.env.NODE_ENV == 'development') {
 				{...dateInput}
 				label="date"
 				policy="end"
-				onChange={v => dispatch(DateInput.actions.setValue(v))} />
+				onChange={v => dispatch(DateInput.actions.setValue(v))}
+				dispatch={dispatch} />
 			<DateRangeInput
 				{...dateRangeInput}
 				label="date range"
-				onChange={v => dispatch(DateRangeInput.actions.setValue(v))} />
+				onChange={v => dispatch(DateRangeInput.actions.setValue(v))}
+				dispatch={dispatch} />
 			<ItemInput
 				{...itemInput}
 				label="item"
