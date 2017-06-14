@@ -6,13 +6,13 @@ module.exports.actions = { setValue }
 
 require('./style.scss')
 
-function TextInput ({ label, lines, minLines = 5, value, error, sensitive, onChange, preventAutocomplete }) {
+function TextInput ({ label, name, lines, minLines = 5, value, error, sensitive, onChange, preventAutocomplete }) {
 	return lines == null
 		? <label>
 			<div className="label">{label}</div>
 			{preventAutocomplete ? <input type="text" style="display:none;" /> : null}
 			{preventAutocomplete ? <input type="password" style="display:none;" /> : null}
-			<input type={sensitive ? 'password' : 'text'} defaultValue={value} onChange={handleChange} />
+			<input type={sensitive ? 'password' : 'text'} name={name} defaultValue={value} onChange={handleChange} />
 			{error ? <span className="validation-error">{error}</span> : null}
 		</label>
 		: <label>
